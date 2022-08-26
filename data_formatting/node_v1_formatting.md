@@ -1,8 +1,6 @@
-
 ## Formatting
 
 Node V1 formatting is as follows:
-
 ```
 {
   "id": "01d340e9-3841-4ab1-a6ca-c9b72d07528b",
@@ -20,9 +18,7 @@ Node V1 formatting is as follows:
     }
   ]
 }
-
 ```
-
 ## Rules 
 
 1) Upper most ID field must contain a value. Non-unique IDs in registrar will be considered updates
