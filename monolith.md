@@ -30,13 +30,21 @@ Once an endpoint is setup to receive steams the server will send formatted strea
 
 **Register**
 
-`/registrar/node/add/<id>/<encoded_node>`
+`/registrar/add/<id>/<encoded_node | encoded_controller>`
 
-Data encoding must match "node_v1_formatting" - See docs/data_formatting for details
+Data encoding must match "node_v1_formatting" or "controller_v1_formatting" - See docs/data_formatting for details
 
 **De-Register**
 
-`/registrar/node/delete/<id>`
+`/registrar/delete/<id>`
+
+**Fetch**
+
+`/registrar/fetch/<id>`
+
+**Probe**
+
+`/registrar/probe/<id>`
 
 # Submitting Metrics (sensor readings)
 
