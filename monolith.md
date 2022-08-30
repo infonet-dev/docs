@@ -56,8 +56,25 @@ Method 1: HTTP
 
 Method 2: 
 
-TCP Using a `crate::message_writer` directed at the configured `metric_submission_port` port. 
+TCP Using a `crate::message_writer` directed at the configured `metric_submission_port` port,
+submit an encoded `reading_v1`.
 
 *Note*: 
 
 Metrics containing a node or sensor id that has not been registered by a registrar endpoint will be ignored and dropped.
+
+# Submitting Metrics (heartbeats)
+There are three ways heartbeats are submitted
+Method 1: HTTP 
+
+`/metric/heartbeat/<encoded_heartbeat>`
+
+Method 2: 
+
+TCP Using a `crate::message_writer` directed at the configured `metric_submission_port` port, 
+submit an encoded `heartbeat_v1`.
+
+Method 2: 
+
+Just send a metric. Any time a metric is submitted its id is given to the heartbeat manager to indicate that 
+the sender is alive!
