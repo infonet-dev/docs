@@ -31,6 +31,10 @@ metric_submission_port = 9000
 [rules]
 rule_script = "rules/default.lua"
 
+[alert]
+max_alert_sends = 0
+alert_cooldown_seconds = 40.0
+
 [twilio]
 account_sid = ""
 auth_token = ""
@@ -61,6 +65,10 @@ to = ""
 - required
 
 `rule_script` - Path to the lua file containing method for handling stream reactions
+
+## [alert]
+`max_alert_sends` - Maximum number of alerts allowed to be sent (0 = infinite)
+`alert_cooldown_seconds` - Number of seconds between sends per given alert id
 
 ## [twilio]
 - optional
