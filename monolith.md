@@ -101,6 +101,12 @@ For a more detailed rules file check out the `demu.lua` file in the monolith rep
 
 # HTTP Endpoints
 
+## Version Info
+
+`/version`
+
+Returns a `version_v1_formatting` json data structure containing build hash, and semantic versioning info.
+
 ## Registrar
 
 **Register**

@@ -1,6 +1,6 @@
 ## Formatting
 
-Strea, V1 formatting is as follows:
+Stream, V1 formatting is as follows:
 
 ```
 {
