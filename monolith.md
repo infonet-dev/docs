@@ -19,13 +19,15 @@ Example of a configuration file :
 instance_name = "monoloth_standard"
 log_file_name = "monolith"
 registration_db_path = "/tmp/monolith_registration.db"
-metric_db_path = "/tmp/monolith_metrics.db"
 
 [networking]
-use_ipv6 = false
 ipv4_address = "0.0.0.0"
-ipv6_address = "::1"
 http_port = 8080
+
+[metric_database]
+path = "/tmp/monolith_metrics.db"
+save_metrics = true
+metric_expiration_time_sec = 604800
 
 [rules]
 rule_script = "rules/default.lua"
@@ -44,20 +46,21 @@ to = ""
 ## [monolith]
 - required
 
-
 `instance_name` - The name of the application to seperate it from other monoliths running
 `log_file_name` - The name of the file to log to (exclude `.log`)
 `registration_db_path` - Path to where registration database exists / will be made
-`metric_db_path` - Path to where metric database exists / will be made
 
 ## [networking]
 - required
 
-
-`use_ipv6` - Boolean to enable ipv6 (not yet implemented)
 `ipv4_address` - IP V4 Address to bind to 
-`ipv6_address` - IP V6 Address to bind to
 `http_port` - Port to serve all HTTP endpoints on
+
+## [metric_database]
+- required
+`path` - Path to where metrics database exists / will be made
+`save_metrics` - If set to **true** the metrics database will be utilized 
+`metric_expiration_time_sec` - Maximum lifespan of any given metric in the database (0 = infinite)
 
 ## [rules]
 - required
@@ -65,6 +68,8 @@ to = ""
 `rule_script` - Path to the lua file containing method for handling stream reactions
 
 ## [alert]
+- required
+
 `max_alert_sends` - Maximum number of alerts allowed to be sent (0 = infinite)
 `alert_cooldown_seconds` - Number of seconds between sends per given alert id
 
