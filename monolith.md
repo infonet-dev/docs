@@ -26,7 +26,6 @@ use_ipv6 = false
 ipv4_address = "0.0.0.0"
 ipv6_address = "::1"
 http_port = 8080
-metric_submission_port = 9000
 
 [rules]
 rule_script = "rules/default.lua"
@@ -59,7 +58,6 @@ to = ""
 `ipv4_address` - IP V4 Address to bind to 
 `ipv6_address` - IP V6 Address to bind to
 `http_port` - Port to serve all HTTP endpoints on
-`metric_submission_port` - TCP-direct metric submission port 
 
 ## [rules]
 - required
@@ -91,6 +89,9 @@ function accept_reading_v1_from_monolith(timestamp, node_id, sensor_id, value)
 
    -- Alert with id 0
    monolith_trigger_alert(0, "Alert message")
+
+   -- Dispatch an action request to a (controller-id, action-id, value)
+   monolith_dispatch_action("fire_extinguisher", "toggle_extinguisher", 1.0)
 end
 ```
 
@@ -141,16 +142,7 @@ Once an endpoint is setup to receive steams the server will send formatted strea
 
 **Submitting Metrics (sensor readings)**
 
-There are two ways to submit data
-
-Method 1: HTTP 
-
 `/metric/submit/<encoded_data>`
-
-Method 2: 
-
-TCP Using a `crate::message_writer` directed at the configured `metric_submission_port` port,
-submit an encoded `reading_v1`.
 
 *Note*: 
 Data encoding must match "reading_v1_formatting" - See docs/data_formatting for details
@@ -159,15 +151,10 @@ Metrics containing a node or sensor id that has not been registered by a registr
 
 **Submitting Metrics (heartbeats)**
 
-There are three ways heartbeats are submitted
+There are two ways heartbeats are submitted
 Method 1: HTTP 
 
 `/metric/heartbeat/<encoded_heartbeat>`
-
-Method 2: 
-
-TCP Using a `crate::message_writer` directed at the configured `metric_submission_port` port, 
-submit an encoded `heartbeat_v1`.
 
 Method 2: 
 
