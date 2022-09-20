@@ -19,28 +19,30 @@ Example of a configuration file :
 instance_name = "monoloth_standard"
 log_file_name = "monolith"
 registration_db_path = "/tmp/monolith_registration.db"
+rule_script = "rules/default.lua"
 
 [networking]
 ipv4_address = "0.0.0.0"
 http_port = 8080
+telnet_enabled = true
+telnet_port = 25565
+telnet_access_code = "password123"
 
-[metric_database]
-path = "/tmp/monolith_metrics.db"
+[metrics]
 save_metrics = true
-metric_expiration_time_sec = 604800
+path = "/tmp/monolith_metrics.db"
+metric_expiration_time_sec = 604800 # 0 = infinite
+enable_metric_streamer = true
 
-[rules]
-rule_script = "rules/default.lua"
-
-[alert]
-max_alert_sends = 0
-alert_cooldown_seconds = 40.0
+[alerts]
+max_alert_sends = 0                # 0 = infinite
+alert_cooldown_seconds = 40.0      # Seconds to cool down per alert id
 
 [twilio]
 account_sid = ""
 auth_token = ""
 from = ""
-to = ""
+to = []
 ```
 
 ## [monolith]
@@ -49,23 +51,28 @@ to = ""
 `instance_name` - The name of the application to seperate it from other monoliths running
 `log_file_name` - The name of the file to log to (exclude `.log`)
 `registration_db_path` - Path to where registration database exists / will be made
+`rule_script` - Path to the lua file containing method for handling stream reactions
 
 ## [networking]
 - required
 
 `ipv4_address` - IP V4 Address to bind to 
 `http_port` - Port to serve all HTTP endpoints on
+`telnet_enabled` - Boolean that enables/ disables the telnet service
+`telnet_port` - Port to serve telnet on
+`telnet_access_code` - Access code required for telnet access
 
-## [metric_database]
+**Note**: Telnet is not a secure protocol. Please ensure that the service is not public facing. 
+This can be done with port rules on servers, or by not having the monolith server be public facing.
+
+## [metrics]
 - required
+
+`save_metrics` - Boolean that enables/ disables the metric database service
 `path` - Path to where metrics database exists / will be made
-`save_metrics` - If set to **true** the metrics database will be utilized 
 `metric_expiration_time_sec` - Maximum lifespan of any given metric in the database (0 = infinite)
+`enable_metric_streamer` - Boolean that enables/ disables the metric streaming service
 
-## [rules]
-- required
-
-`rule_script` - Path to the lua file containing method for handling stream reactions
 
 ## [alert]
 - required
@@ -79,7 +86,7 @@ to = ""
 `account_sid` - SID for twilio account
 `auth_token` - Auth token for twilio account
 `from` - Twilio phone number (including the `+` prefix)
-`to` - Destination phone number (including the `+` prefix)
+`to` - Array of destination phone numbers (including the `+` prefix) to send alerts to
 
 
 # Rules Script
@@ -92,10 +99,10 @@ function accept_reading_v1_from_monolith(timestamp, node_id, sensor_id, value)
 
    print(" ts:" .. timestamp .. ", node:" .. node_id .. ", sensor:" .. sensor_id .. ", value:" .. value)
 
-   -- Alert with id 0
+   -- Alert with id 0 (If an alert backend (like twilio) is set up, this would trigger a message to be sent)
    monolith_trigger_alert(0, "Alert message")
 
-   -- Dispatch an action request to a (controller-id, action-id, value)
+   -- Dispatch an action request to a registered controller (controller-id, action-id, value) 
    monolith_dispatch_action("fire_extinguisher", "toggle_extinguisher", 1.0)
 end
 ```
