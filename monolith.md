@@ -49,18 +49,27 @@ to = []
 - required
 
 `instance_name` - The name of the application to seperate it from other monoliths running
+
 `log_file_name` - The name of the file to log to (exclude `.log`)
+
 `registration_db_path` - Path to where registration database exists / will be made
+
 `rule_script` - Path to the lua file containing method for handling stream reactions
+
 
 ## [networking]
 - required
 
 `ipv4_address` - IP V4 Address to bind to 
+
 `http_port` - Port to serve all HTTP endpoints on
+
 `telnet_enabled` - Boolean that enables/ disables the telnet service
+
 `telnet_port` - Port to serve telnet on
+
 `telnet_access_code` - Access code required for telnet access
+
 
 **Note**: Telnet is not a secure protocol. Please ensure that the service is not public facing. 
 This can be done with port rules on servers, or by not having the monolith server be public facing.
@@ -69,24 +78,34 @@ This can be done with port rules on servers, or by not having the monolith serve
 - required
 
 `save_metrics` - Boolean that enables/ disables the metric database service
+
 `path` - Path to where metrics database exists / will be made
+
 `metric_expiration_time_sec` - Maximum lifespan of any given metric in the database (0 = infinite)
+
 `enable_metric_streamer` - Boolean that enables/ disables the metric streaming service
+
 
 
 ## [alert]
 - required
 
 `max_alert_sends` - Maximum number of alerts allowed to be sent (0 = infinite)
+
 `alert_cooldown_seconds` - Number of seconds between sends per given alert id
+
 
 ## [twilio]
 - optional
 
 `account_sid` - SID for twilio account
+
 `auth_token` - Auth token for twilio account
+
 `from` - Twilio phone number (including the `+` prefix)
+
 `to` - Array of destination phone numbers (including the `+` prefix) to send alerts to
+
 
 
 # Rules Script
